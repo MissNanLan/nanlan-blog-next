@@ -1,0 +1,50 @@
+// 数据库连接配置
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// 生成器配置
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Post 模型定义
+model Post {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  content     String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  categories    Category[]  @relation(fields: [categoryId], references: [id])
+  categoryId  String[]    @db.ObjectId
+  tags        Tag[]     @relation(fields: [tagIds], references: [id])
+  tagIds      String[]  @db.ObjectId  
+  author      User      @relation(fields: [authorId], references: [id])
+  authorId    String    @db.ObjectId
+  readingTime Int       @default(0)
+  count       Int       @default(0)
+}
+
+model Category {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  name       String    @unique
+  postIds    String[]  @db.ObjectId
+  posts      Post[]    @relation(fields: [postIds], references: [id])   
+}
+
+model Tag {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String    @unique
+  posts       Post[]    @relation(fields: [postIds], references: [id])
+  postIds     String[]  @db.ObjectId
+}
+
+model User {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  email      String    @unique
+  password   String
+  posts      Post[]
+}

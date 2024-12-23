@@ -1,0 +1,6 @@
+# #!/bin/sh
+# . "$(dirname "$0")/_/husky.sh"
+
+# npx --no-install lint-staged --quiet
+
+# TODO: 需要解决 husky 和 lint-staged 的冲突
