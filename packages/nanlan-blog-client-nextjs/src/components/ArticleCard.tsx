@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArticleProps } from "@/types/article";
 import { Calendar, ChartBarStacked, Tag } from "lucide-react";
+import dayjs from "dayjs";
 import { ArticleMetaItem, ArticleMetaItemProps } from "./ArticleMetaItem";
 
 export function ArticleCard(props: ArticleProps) {
@@ -10,11 +11,11 @@ export function ArticleCard(props: ArticleProps) {
     {
       title: "发表于",
       icon: <Calendar size={14} />,
-      value: createdAt,
+      value: dayjs(createdAt).format("YYYY-MM-DD"),
     },
     {
       icon: <ChartBarStacked size={14} />,
-      value: category,
+      value: dayjs(category).format("YYYY-MM-DD"),
     },
     {
       icon: <Tag size={14} />,

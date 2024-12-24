@@ -1,3 +1,4 @@
+"use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Calendar,
@@ -6,25 +7,31 @@ import {
   Clock,
   ChartBarStacked,
 } from "lucide-react";
-import { articles } from "@/mock/articles";
+import dayjs from "dayjs";
 import {
   ArticleMetaItem,
   ArticleMetaItemProps,
 } from "@/components/ArticleMetaItem";
+import { useArticle } from "@/hooks/useArticles";
 
 export default function ArticlePage({ params }: { params: { id: string } }) {
   const { id } = params;
-  const article = articles.find((item) => item.id === id);
+  const { data: article, isLoading, error } = useArticle(id);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {(error as Error).message}</div>;
+  if (!article) return <div>Article not found</div>;
+
   const articleInfoCardList: ArticleMetaItemProps[] = [
     {
       title: "发表于",
       icon: <Calendar size={14} />,
-      value: article?.createdAt,
+      value: dayjs(article?.createdAt).format("YYYY-MM-DD"),
     },
     {
       title: "更新于",
       icon: <Calendar size={14} />,
-      value: article?.updatedAt,
+      value: dayjs(article?.updatedAt).format("YYYY-MM-DD"),
     },
     {
       title: "阅读量",

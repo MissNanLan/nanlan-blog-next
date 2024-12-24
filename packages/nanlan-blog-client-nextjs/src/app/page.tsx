@@ -1,10 +1,17 @@
+"use client";
+
 import { ArticleCard } from "@/components/ArticleCard";
-import { articles } from "@/mock/articles";
+import { useArticles } from "@/hooks/useArticles";
 
 export default function Home() {
+  const { data, isLoading, error } = useArticles();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading articles</div>;
+
   return (
     <div className="space-y-4">
-      {articles.map((article) => (
+      {data?.map((article) => (
         <div key={article.id}>
           <ArticleCard {...article} />
         </div>

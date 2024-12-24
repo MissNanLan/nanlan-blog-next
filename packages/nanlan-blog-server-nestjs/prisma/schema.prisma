@@ -11,18 +11,18 @@ generator client {
 
 // Post 模型定义
 model Post {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  id          String         @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String
   content     String
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  categories    Category[]  @relation(fields: [categoryId], references: [id])
-  categoryId  String[]    @db.ObjectId
-  tags        Tag[]     @relation(fields: [tagIds], references: [id])
-  tagIds      String[]  @db.ObjectId  
-  author      User      @relation(fields: [authorId], references: [id])
-  authorId    String    @db.ObjectId
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  categories  Category[]    @relation(fields: [categoryId], references: [id])
+  categoryId  String[]      @db.ObjectId
+  tags        Tag[]         @relation(fields: [tagIds], references: [id])
+  tagIds      String[]      @db.ObjectId  
+  author      User          @relation(fields: [authorId], references: [id])
+  authorId    String       @db.ObjectId
   readingTime Int       @default(0)
   count       Int       @default(0)
 }
@@ -37,8 +37,8 @@ model Category {
 model Tag {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   name        String    @unique
-  posts       Post[]    @relation(fields: [postIds], references: [id])
-  postIds     String[]  @db.ObjectId
+  posts       Post[]?    @relation(fields: [postIds], references: [id])
+  postIds     String[]?  @db.ObjectId
 }
 
 model User {

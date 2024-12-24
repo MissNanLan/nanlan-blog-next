@@ -7,7 +7,9 @@
     "commit": "git-cz",
     "lint-staged": "lint-staged",
     "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "start:server": "pnpm --filter nanlan-blog-server-nestjs start",
+    "start:client": "pnpm --filter nanlan-blog-nextjs dev"
   },
   "config": {
     "commitizen": {
