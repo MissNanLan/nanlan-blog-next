@@ -5,10 +5,16 @@ import { PostsModule } from './posts/posts.module';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import { TagsModule } from './tags/tags.module';
 import { CategoriesModule } from './categories/categories.module';
-import { UsersModule } from './users/users.module';
+import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [PrismaModule, PostsModule, TagsModule, CategoriesModule, UsersModule],
+  imports: [
+    PrismaModule,
+    PostsModule,
+    TagsModule,
+    CategoriesModule,
+    UserModule,
+  ],
   providers: [
     {
       provide: APP_INTERCEPTOR,
