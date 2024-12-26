@@ -1,4 +1,4 @@
-export interface ArticleProps {
+export interface ArticleResponse {
   id: string;
   title: string;
   description: string;

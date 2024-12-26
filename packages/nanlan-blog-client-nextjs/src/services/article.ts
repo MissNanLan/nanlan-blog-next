@@ -1,13 +1,5 @@
 import { request } from "@/lib/request";
-
-export interface Article {
-  id: string;
-  title: string;
-  description: string;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
-}
+import { ArticleResponse } from "@/types/article";
 
 export interface ApiResponse<T> {
   code: number;
@@ -16,6 +8,7 @@ export interface ApiResponse<T> {
 }
 
 export const articleService = {
-  getArticles: () => request.get<ApiResponse<Article[]>>("/posts"),
-  getArticle: (id: string) => request.get<ApiResponse<Article>>(`/posts/${id}`),
+  getArticles: () => request.get<ApiResponse<ArticleResponse[]>>("/post"),
+  getArticle: (id: string) =>
+    request.get<ApiResponse<ArticleResponse>>(`/post/${id}`),
 };
