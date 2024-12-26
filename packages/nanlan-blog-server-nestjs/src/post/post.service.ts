@@ -1,17 +1,17 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { LoggerUtil } from 'src/common/utils/logger.util';
 
 @Injectable()
 export class PostsService {
-  private readonly logger = new Logger(PostsService.name);
+  private readonly logger = new LoggerUtil(PostsService.name);
 
   constructor(private prisma: PrismaService) {}
 
   async create(createPostDto: CreatePostDto) {
-    this.logger.debug('Creating post with data:', createPostDto);
-
+    this.logger.debug('Creating post...');
     try {
       // 尝试创建文章
       const post = await this.prisma.post.create({
@@ -23,9 +23,9 @@ export class PostsService {
             connect: { id: createPostDto.authorId },
           },
           // 只在有值时添加关系
-          ...(createPostDto.categoryId?.length > 0 && {
+          ...(createPostDto.categoryIds?.length > 0 && {
             categories: {
-              connect: createPostDto.categoryId.map((id) => ({ id })),
+              connect: createPostDto.categoryIds.map((id) => ({ id })),
             },
           }),
           ...(createPostDto.tagIds?.length > 0 && {
@@ -40,8 +40,6 @@ export class PostsService {
           author: true,
         },
       });
-
-      this.logger.debug('Created post:', post);
       return post;
     } catch (error) {
       this.logger.error('Error creating post:', error);
@@ -60,7 +58,7 @@ export class PostsService {
   }
 
   async findOne(id: string) {
-    console.log('✅ finding post data...current id:', id);
+    this.logger.debug(`finding post data...current id:, ${id}`);
     return this.prisma.post.findUnique({
       where: { id },
       include: {

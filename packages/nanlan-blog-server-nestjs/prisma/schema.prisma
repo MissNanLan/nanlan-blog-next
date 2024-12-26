@@ -17,8 +17,8 @@ model Post {
   content     String
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  categories  Category[] @relation(fields: [categoryId], references: [id])
-  categoryId  String[]   @db.ObjectId
+  categories  Category[] @relation(fields: [categoryIds], references: [id])
+  categoryIds  String[]   @db.ObjectId
   tags        Tag[]      @relation(fields: [tagIds], references: [id])
   tagIds      String[]   @db.ObjectId
   author      User       @relation(fields: [authorId], references: [id])

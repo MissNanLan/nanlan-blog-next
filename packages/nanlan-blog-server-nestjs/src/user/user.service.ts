@@ -11,11 +11,10 @@ export class UsersService {
 
   constructor(private prisma: PrismaService) {}
 
-  async create(createUserDto: CreateUserDto): Promise<UserEntity> {
+  async create(createUserDto: CreateUserDto) {
     try {
       this.logger.log(`开始创建用户: ${createUserDto.email}`);
 
-      // 检查邮箱是否已存在
       const existingEmail = await this.prisma.user.findUnique({
         where: { email: createUserDto.email },
       });
@@ -27,13 +26,18 @@ export class UsersService {
 
       const user = await this.prisma.user.create({
         data: createUserDto,
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
       });
 
       this.logger.log(`用户创建成功: ${user.email}`);
       return user;
     } catch (error) {
       this.logger.error(`用户创建失败: ${createUserDto.email}`);
-      throw new BadRequestException('用户创建失败');
+      throw new BadRequestException(error.response.message);
     }
   }
 
@@ -50,21 +54,27 @@ export class UsersService {
 
   async findOne(id: string): Promise<UserEntity> {
     this.logger.debug(`获取用户: ${id}`);
-    const user = await this.prisma.user.findUnique({
-      where: { id },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-      },
-    });
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: { id },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      });
 
-    if (!user) {
-      this.logger.error(`用户不存在: ${id}`);
-      throw new BadRequestException('用户不存在');
+      if (!user) {
+        this.logger.error(`用户不存在: ${id}`);
+        throw new BadRequestException('用户不存在');
+      }
+      this.logger.log(`用户获取成功: ${user.email}`);
+      return user;
+    } catch (error) {
+      console.log('error', error);
+      this.logger.error(`用户获取失败: ${id}`);
+      throw new BadRequestException(error.response.message);
     }
-    this.logger.log(`用户获取成功: ${user.email}`);
-    return user;
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
@@ -72,6 +82,11 @@ export class UsersService {
     return this.prisma.user.update({
       where: { id },
       data: updateUserDto,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
     });
   }
 
