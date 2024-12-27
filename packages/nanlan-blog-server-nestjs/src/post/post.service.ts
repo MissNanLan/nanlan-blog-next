@@ -49,10 +49,32 @@ export class PostsService {
 
   async findAll() {
     return this.prisma.post.findMany({
-      include: {
-        categories: false,
-        tags: false,
-        author: false,
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        description: true,
+        createdAt: true,
+        updatedAt: true,
+        categories: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        tags: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
       },
     });
   }
@@ -61,10 +83,33 @@ export class PostsService {
     this.logger.debug(`finding post data...current id:, ${id}`);
     return this.prisma.post.findUnique({
       where: { id },
-      include: {
-        categories: true,
-        tags: true,
-        author: true,
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        description: true,
+        createdAt: true,
+        updatedAt: true,
+        // 不列出 tagIds 和 categoryIds，它们就不会被返回
+        categories: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        tags: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
       },
     });
   }

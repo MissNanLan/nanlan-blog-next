@@ -14,6 +14,8 @@ const config = {
       colors: {
         gray: {
           custom: "#858585",
+          400: "#c2c8d1", // 浅灰色
+          500: "#8a919f", // 深灰色
         },
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

@@ -15,8 +15,7 @@ import {
 import { useArticle } from "@/hooks/useArticles";
 
 export default function ArticlePage({ params }: { params: { id: string } }) {
-  const { id } = params;
-  const { data: article, isLoading, error } = useArticle(id);
+  const { data: article, isLoading, error } = useArticle(params?.id);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {(error as Error).message}</div>;

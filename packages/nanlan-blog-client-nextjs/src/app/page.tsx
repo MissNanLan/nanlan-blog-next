@@ -6,8 +6,10 @@ import { SkeletonCard } from "@/components/Sketon";
 
 export default function Home() {
   const { data, isLoading, error } = useArticles();
+  console.log("data", data);
 
   if (error) return <div>Error loading articles</div>;
+  if (!data?.length) return <div>No articles found</div>;
 
   return (
     <div className="space-y-4">

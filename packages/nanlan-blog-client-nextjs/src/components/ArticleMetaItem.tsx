@@ -2,7 +2,7 @@ export type ArticleMetaItemProps = {
   needDivide?: boolean;
   title?: string;
   icon: React.ReactNode;
-  value?: string | number;
+  value?: React.ReactNode;
 };
 
 export function ArticleMetaItem({

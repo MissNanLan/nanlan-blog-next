@@ -20,7 +20,7 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   (response) => {
     console.log("Response:", response);
-    return response.data.data;
+    return response.data;
   },
   (error) => {
     console.error("Request error:", error.response?.data || error);

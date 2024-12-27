@@ -8,15 +8,24 @@ export class PostEntity extends BaseEntity {
   @ApiProperty({ description: '文章标题' })
   title: string;
 
+  @ApiProperty({ description: '文章描述' })
+  description: string;
+
   @ApiProperty({ description: '文章内容' })
   content: string;
 
   @ApiProperty({ description: '作者' })
   author: UserEntity;
 
-  @ApiProperty({ description: '分类' })
+  @ApiProperty({
+    description: '分类列表',
+    type: [CategoryEntity],
+  })
   categories: CategoryEntity[];
 
-  @ApiProperty({ description: '标签' })
+  @ApiProperty({
+    description: '标签列表',
+    type: [TagEntity],
+  })
   tags: TagEntity[];
 }

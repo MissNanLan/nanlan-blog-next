@@ -7,3 +7,10 @@ export interface CategoryProps {
   parentId?: string;
   children?: CategoryProps[];
 }
+
+export interface CategoryResponse {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  name: string;
+}

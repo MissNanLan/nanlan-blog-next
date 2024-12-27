@@ -1,25 +1,32 @@
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArticleProps } from "@/types/article";
+import { ArticleResponse } from "@/types/article";
 import { Calendar, ChartBarStacked, Tag } from "lucide-react";
 import dayjs from "dayjs";
 import { ArticleMetaItem, ArticleMetaItemProps } from "./ArticleMetaItem";
 
-export function ArticleCard(props: ArticleProps) {
-  const { title, description, createdAt, tag, category, id } = props;
+export function ArticleCard(props: ArticleResponse) {
+  const { title, description, createdAt, tags, categories, id } = props;
   const articleInfoCardList: ArticleMetaItemProps[] = [
     {
       title: "发表于",
       icon: <Calendar size={14} />,
       value: dayjs(createdAt).format("YYYY-MM-DD"),
     },
-    {
-      icon: <ChartBarStacked size={14} />,
-      value: dayjs(category).format("YYYY-MM-DD"),
-    },
+    // {
+    //   icon: <ChartBarStacked size={14} />,
+    //   value: dayjs(category).format("YYYY-MM-DD"),
+    // },
     {
       icon: <Tag size={14} />,
-      value: tag,
+      value: tags.map((tag) => (
+        <div
+          key={tag.id}
+          className="text-gray rounded-sm bg-gray-200 p-0.5 text-xs text-gray-500"
+        >
+          {tag.name}
+        </div>
+      )),
       needDivide: false,
     },
   ];
