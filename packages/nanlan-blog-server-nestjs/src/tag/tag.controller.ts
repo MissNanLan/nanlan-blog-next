@@ -7,7 +7,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { TagsService } from './tag.service';
+import { TagService } from './tag.service';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { TagEntity } from './entities/tag.entity';
@@ -15,8 +15,8 @@ import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Tag')
 @Controller('tag')
-export class TagsController {
-  constructor(private readonly tagsService: TagsService) {}
+export class TagController {
+  constructor(private readonly tagsService: TagService) {}
 
   @Get()
   @ApiOperation({ summary: '获取所有标签' })
