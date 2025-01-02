@@ -1,11 +1,13 @@
-export interface TagResponse {
+import { Post } from "./article";
+
+export interface Tag {
   id: string;
-  createdAt?: string;
-  updatedAt?: string;
   name: string;
+  count: number;
+  posts: Post[];
 }
 
-export interface TagProps extends TagResponse {
+export interface TagProps extends Tag {
   count: number;
   color?: string; // 标签颜色
   description?: string;

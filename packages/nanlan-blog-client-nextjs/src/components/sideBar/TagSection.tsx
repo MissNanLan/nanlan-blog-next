@@ -1,18 +1,22 @@
-"use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { TagCloud } from "@/components/TagCloud";
 import { useTags } from "@/hooks/tag";
-import { LoadingWrapper } from "@/components/LoadingWrapper";
+import { Tag } from "lucide-react";
+import { LoadingWrapper } from "../LoadingWrapper";
+import { TagCloud } from "../TagCloud";
 
-export default function Tag() {
+export function TagSection() {
   const { data: tags, isLoading, error } = useTags();
+
   return (
-    <Card>
+    <Card className="w-[350px]">
       <LoadingWrapper isLoading={isLoading} error={error} data={tags}>
         <CardHeader>
-          <CardTitle className="text-2xl font-bold">标签</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <Tag size={16} />
+            标签云
+          </CardTitle>
         </CardHeader>
-        <CardContent className="p-8">
+        <CardContent>
           <TagCloud tags={tags || []} />
         </CardContent>
       </LoadingWrapper>

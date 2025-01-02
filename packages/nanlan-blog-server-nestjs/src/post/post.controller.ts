@@ -51,4 +51,11 @@ export class PostController {
   remove(@Param('id') id: string) {
     return this.postsService.remove(id);
   }
+
+  @Get('date/:date')
+  @ApiOperation({ summary: '获取指定年月的文章' })
+  @ApiOkResponse({ type: [PostEntity] })
+  async getByDate(@Param('date') date: string) {
+    return this.postsService.findByDate(date);
+  }
 }

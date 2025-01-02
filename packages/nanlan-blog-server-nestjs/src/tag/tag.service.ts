@@ -8,12 +8,29 @@ export class TagService {
   constructor(private prisma: PrismaService) {}
 
   async findAll() {
-    return this.prisma.tag.findMany();
+    const tags = await this.prisma.tag.findMany({
+      include: {
+        _count: {
+          select: {
+            posts: true,
+          },
+        },
+      },
+    });
+
+    return tags.map((tag) => ({
+      id: tag.id,
+      name: tag.name,
+      count: tag._count.posts,
+    }));
   }
 
   async findOne(id: string) {
     return this.prisma.tag.findUnique({
       where: { id },
+      include: {
+        posts: true,
+      },
     });
   }
 

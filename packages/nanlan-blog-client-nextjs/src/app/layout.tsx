@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "./globals.css";
-import Header from "@/components/Header";
-import { Sidebar } from "@/components/sideBar";
-import MainLayout from "@/components/MainLayout";
+import Header from "@/components/layout/Header";
+import Main from "@/components/layout/Main";
+import { Sidebar } from "@/components/sidebar";
 import { QueryProvider } from "@/providers/query-provider";
+import "./globals.css";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -23,7 +23,11 @@ export const metadata: Metadata = {
   description: "A personal blog built with Next.js",
 };
 
-export default function RootLayout({ children }: Readonly) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body
@@ -31,7 +35,7 @@ export default function RootLayout({ children }: Readonly) {
       >
         <QueryProvider>
           <Header />
-          <MainLayout left={children} right={<Sidebar />} />
+          <Main left={children} right={<Sidebar />} />
         </QueryProvider>
       </body>
     </html>

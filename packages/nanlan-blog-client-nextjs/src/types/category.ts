@@ -8,7 +8,7 @@ export interface CategoryProps {
   children?: CategoryProps[];
 }
 
-export interface CategoryResponse {
+export interface Category {
   id: string;
   createdAt: string;
   updatedAt: string;

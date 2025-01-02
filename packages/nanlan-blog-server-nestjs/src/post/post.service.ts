@@ -8,6 +8,37 @@ import { LoggerUtil } from 'src/common/utils/logger.util';
 export class PostsService {
   private readonly logger = new LoggerUtil(PostsService.name);
 
+  // 创建一个通用的 select 对象
+  private readonly postSelect = {
+    id: true,
+    title: true,
+    content: true,
+    description: true,
+    createdAt: true,
+    updatedAt: true,
+    readingTime: true,
+    count: true,
+    categories: {
+      select: {
+        id: true,
+        name: true,
+      },
+    },
+    tags: {
+      select: {
+        id: true,
+        name: true,
+      },
+    },
+    author: {
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
+    },
+  } as const;
+
   constructor(private prisma: PrismaService) {}
 
   async create(createPostDto: CreatePostDto) {
@@ -34,11 +65,7 @@ export class PostsService {
             },
           }),
         },
-        include: {
-          categories: true,
-          tags: true,
-          author: true,
-        },
+        select: this.postSelect,
       });
       return post;
     } catch (error) {
@@ -49,33 +76,7 @@ export class PostsService {
 
   async findAll() {
     return this.prisma.post.findMany({
-      select: {
-        id: true,
-        title: true,
-        content: true,
-        description: true,
-        createdAt: true,
-        updatedAt: true,
-        categories: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-        tags: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-        author: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
-      },
+      select: this.postSelect,
     });
   }
 
@@ -83,34 +84,7 @@ export class PostsService {
     this.logger.debug(`finding post data...current id:, ${id}`);
     return this.prisma.post.findUnique({
       where: { id },
-      select: {
-        id: true,
-        title: true,
-        content: true,
-        description: true,
-        createdAt: true,
-        updatedAt: true,
-        // 不列出 tagIds 和 categoryIds，它们就不会被返回
-        categories: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-        tags: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-        author: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
-      },
+      select: this.postSelect,
     });
   }
 
@@ -129,6 +103,26 @@ export class PostsService {
   async remove(id: string) {
     return this.prisma.post.delete({
       where: { id },
+    });
+  }
+
+  async findByDate(date: string) {
+    const [year, month] = date.split('-').map(Number);
+
+    // 创建当月的开始和结束日期
+    const startDate = new Date(year, month - 1, 1); // month - 1 因为 JS 月份从 0 开始
+    const endDate = new Date(year, month, 0); // 下个月的第 0 天就是当月最后一天
+
+    this.logger.debug(`Searching posts between ${startDate} and ${endDate}`);
+
+    return this.prisma.post.findMany({
+      where: {
+        createdAt: {
+          gte: startDate,
+          lte: endDate,
+        },
+      },
+      select: this.postSelect,
     });
   }
 }

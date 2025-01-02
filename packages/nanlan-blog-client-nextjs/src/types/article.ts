@@ -1,15 +1,15 @@
-import { CategoryResponse } from "./category";
-import { TagResponse } from "./tag";
+import { Category } from "./category";
+import { Tag } from "./tag";
 
-export interface ArticleResponse {
+export interface Post {
   id: string;
   title: string;
   description: string;
   content: string;
   createdAt: string;
-  tags: TagResponse[];
-  categories: CategoryResponse[];
-  images?: string;
+  tags: Tag[];
+  categories: Category[];
+  image?: string;
   count: number;
   updatedAt: string;
   readingTime: number;

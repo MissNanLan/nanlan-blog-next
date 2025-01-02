@@ -13,7 +13,7 @@ import {
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
 export default function Header() {
   const NavBar = () => {
@@ -63,10 +63,8 @@ export default function Header() {
         <div className="flex items-center gap-2 md:hidden">
           <Sheet>
             <Search className="h-4 w-4" />
-            <SheetTrigger>
-              <Button variant="ghost" size="icon">
-                <Menu className="h-6 w-6" />
-              </Button>
+            <SheetTrigger asChild>
+              <Menu className="h-6 w-6" />
             </SheetTrigger>
 
             <SheetContent showCloseButton={false}>

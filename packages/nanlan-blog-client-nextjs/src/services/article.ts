@@ -1,9 +1,9 @@
 import { request } from "@/lib/request";
-import { ArticleResponse } from "@/types/article";
-import { ApiResponse } from "@/types/request";
+import { Post } from "@/types/article";
 
 export const articleService = {
-  getArticles: () => request.get<ArticleResponse[]>("/post"),
-  getArticle: (id: string) =>
-    request.get<ApiResponse<ArticleResponse>>(`/post/${id}`),
+  getArticles: () => request.get<Post[]>("/post"),
+  getArticle: (id: string) => request.get<Post>(`/post/${id}`),
+  getArticlesByDate: (date: string) =>
+    request.get<Post[]>(`/post/date/${date}`),
 };

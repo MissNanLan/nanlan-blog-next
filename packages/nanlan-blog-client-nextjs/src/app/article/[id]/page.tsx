@@ -12,9 +12,9 @@ import {
   ArticleMetaItem,
   ArticleMetaItemProps,
 } from "@/components/ArticleMetaItem";
-import { useArticle } from "@/hooks/useArticles";
+import { useArticle } from "@/hooks/article";
 
-export default function ArticlePage({ params }: { params: { id: string } }) {
+export default function ArticleDetail({ params }: { params: { id: string } }) {
   const { data: article, isLoading, error } = useArticle(params?.id);
 
   if (isLoading) return <div>Loading...</div>;

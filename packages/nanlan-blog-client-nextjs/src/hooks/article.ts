@@ -21,3 +21,13 @@ export function useArticle(id: string) {
     enabled: !!id,
   });
 }
+
+export function useArticlesByYear(date: string) {
+  return useQuery({
+    queryKey: ["articlesByYear", date],
+    queryFn: async () => {
+      const response = await articleService.getArticlesByDate(date);
+      return response.data;
+    },
+  });
+}

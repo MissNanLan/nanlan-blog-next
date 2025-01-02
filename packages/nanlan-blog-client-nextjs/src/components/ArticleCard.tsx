@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArticleResponse } from "@/types/article";
+import { Post } from "@/types/article";
 import { Calendar, ChartBarStacked, Tag } from "lucide-react";
 import dayjs from "dayjs";
 import { ArticleMetaItem, ArticleMetaItemProps } from "./ArticleMetaItem";
 
-export function ArticleCard(props: ArticleResponse) {
+export function ArticleCard(props: Post) {
   const { title, description, createdAt, tags, categories, id } = props;
   const articleInfoCardList: ArticleMetaItemProps[] = [
     {

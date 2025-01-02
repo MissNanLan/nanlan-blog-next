@@ -1,8 +1,8 @@
-import { ArticleProps } from "./article";
+import { Post } from "./article";
 
-export interface ArchiveGroup {
+export interface Archive {
   year: number;
   month: number;
-  articles: ArticleProps[];
+  articles: Post[];
   count: number;
 }
