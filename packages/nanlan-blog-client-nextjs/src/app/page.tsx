@@ -1,26 +1,14 @@
 "use client";
 
 import { ArticleCard } from "@/components/ArticleCard";
-import { useArticles } from "@/hooks/article";
 import { LoadingWrapper } from "@/components/LoadingWrapper";
-import { useStore } from "@/store/useStore";
-import { useEffect } from "react";
+import { useArticleStore } from "@/store/article";
 
 export default function Home() {
-  const { data, isLoading, error } = useArticles();
-  const { setArticles, setLoading, setError, articles } = useStore();
-
-  // 当数据加载完成后，存储到 store
-  useEffect(() => {
-    if (data) {
-      setArticles(data);
-      setLoading(isLoading);
-      setError(error);
-    }
-  }, [data, isLoading, error, setArticles, setLoading, setError]);
+  const { articles, loading, error } = useArticleStore();
 
   return (
-    <LoadingWrapper isLoading={isLoading} error={error} data={data}>
+    <LoadingWrapper isLoading={loading} error={error} data={articles}>
       <div className="space-y-4">
         {articles.map((article) => (
           <div key={article.id}>

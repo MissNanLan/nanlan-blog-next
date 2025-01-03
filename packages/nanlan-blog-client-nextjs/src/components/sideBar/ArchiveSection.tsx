@@ -1,14 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Archive } from "lucide-react";
 import Link from "next/link";
-import { useStore } from "@/store/useStore";
+import { useArticleStore } from "@/store/article";
 import { getArticlesGroupByYear } from "../timeAxis/handle";
 import { LoadingWrapper } from "../LoadingWrapper";
 
 export function ArchiveSection() {
-  const { articles, loading: isLoading, error } = useStore();
+  const { articles, loading, error } = useArticleStore();
   const archives = getArticlesGroupByYear(articles);
-  console.log(archives);
 
   const chineseMonth = [
     "一月",
@@ -28,7 +27,7 @@ export function ArchiveSection() {
 
   return (
     <Card className="w-[350px]">
-      <LoadingWrapper isLoading={isLoading} error={error} data={archives}>
+      <LoadingWrapper isLoading={loading} error={error} data={archives}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Archive size={16} />

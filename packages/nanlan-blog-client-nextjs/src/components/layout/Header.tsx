@@ -1,22 +1,19 @@
+"use client";
+
 import Link from "next/link";
-import {
-  Home,
-  Tags,
-  Archive,
-  FolderTree,
-  Search,
-  Menu, // 移动端菜单图
-} from "lucide-react";
+import { Home, Tags, Archive, FolderTree, Search, Menu } from "lucide-react";
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
-import { Button } from "../ui/button";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 export default function Header() {
   const NavBar = () => {
+    const pathname = usePathname();
     const navbarList = [
       {
         name: "首页",
@@ -40,25 +37,44 @@ export default function Header() {
       },
     ];
 
+    // 抽取共用的链接样式
+    const linkStyles = "flex items-center gap-2 text-sm transition-colors";
+    const activeLinkStyles = "text-primary";
+    const hoverLinkStyles = "hover:text-primary";
+    const underlineStyles =
+      "absolute -bottom-1 left-0 h-0.5 bg-primary transition-all";
+
     return (
       <>
         {/* Desktop Navigation */}
         <nav className="hidden items-center space-x-8 md:flex">
-          <span className="flex items-center gap-2">
+          <span className={cn(linkStyles, hoverLinkStyles)}>
             <Search className="h-4 w-4" /> 搜索
           </span>
           {navbarList.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className="hover:text-primary group relative flex items-center gap-2 text-sm transition-colors"
+              className={cn(
+                linkStyles,
+                hoverLinkStyles,
+                "group relative",
+                pathname === item.href && activeLinkStyles,
+              )}
             >
               <item.icon className="h-4 w-4" />
               <span>{item.name}</span>
-              <span className="bg-primary absolute -bottom-1 left-0 h-0.5 w-0 transition-all group-hover:w-full" />
+              <span
+                className={cn(
+                  underlineStyles,
+                  "w-0 group-hover:w-full",
+                  pathname === item.href && "w-full",
+                )}
+              />
             </Link>
           ))}
         </nav>
+
         {/* Mobile Navigation */}
         <div className="flex items-center gap-2 md:hidden">
           <Sheet>
@@ -70,10 +86,15 @@ export default function Header() {
             <SheetContent showCloseButton={false}>
               <nav className="mt-4 flex flex-col space-y-2">
                 {navbarList.map((item) => (
-                  <SheetClose asChild key={item.name} className="md:hidden">
+                  <SheetClose asChild key={item.name}>
                     <Link
                       href={item.href}
-                      className="flex items-center gap-2 p-2"
+                      className={cn(
+                        linkStyles,
+                        hoverLinkStyles,
+                        "p-2",
+                        pathname === item.href && activeLinkStyles,
+                      )}
                     >
                       <item.icon className="h-4 w-4" />
                       <span>{item.name}</span>

@@ -5,6 +5,7 @@ import Main from "@/components/layout/Main";
 import { Sidebar } from "@/components/sidebar";
 import { QueryProvider } from "@/providers/query-provider";
 import "./globals.css";
+import { DataProvider } from "@/providers/data-provider";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -34,8 +35,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <QueryProvider>
-          <Header />
-          <Main left={children} right={<Sidebar />} />
+          <DataProvider>
+            <Header />
+            <Main left={children} right={<Sidebar />} />
+          </DataProvider>
         </QueryProvider>
       </body>
     </html>

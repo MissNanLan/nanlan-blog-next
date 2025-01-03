@@ -7,11 +7,11 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
+import { ApiOkResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CategoryEntity } from './entities/category.entity';
-import { ApiOkResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('category')
 export class CategoryController {
@@ -20,9 +20,8 @@ export class CategoryController {
   @Post()
   @ApiOperation({ summary: '创建分类' })
   @ApiOkResponse({ type: CategoryEntity })
-  async create(
-    @Body() createCategoryDto: CreateCategoryDto,
-  ): Promise<CategoryEntity> {
+  create(@Body() createCategoryDto: CreateCategoryDto) {
+    console.log('createCategoryDto', createCategoryDto);
     return this.categoryService.create(createCategoryDto);
   }
 

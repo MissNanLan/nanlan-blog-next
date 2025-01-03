@@ -13,13 +13,10 @@ import {
   ArticleMetaItemProps,
 } from "@/components/ArticleMetaItem";
 import { useArticle } from "@/hooks/article";
+import { LoadingWrapper } from "@/components/LoadingWrapper";
 
 export default function ArticleDetail({ params }: { params: { id: string } }) {
   const { data: article, isLoading, error } = useArticle(params?.id);
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {(error as Error).message}</div>;
-  if (!article) return <div>Article not found</div>;
 
   const articleInfoCardList: ArticleMetaItemProps[] = [
     {
@@ -54,18 +51,20 @@ export default function ArticleDetail({ params }: { params: { id: string } }) {
   ];
 
   return (
-    <Card>
-      <CardHeader className="pb-3">
-        <CardTitle>
-          <div className="hover:text-primary text-lg">{article?.title}</div>
-        </CardTitle>
-        <div className="text-gray-custom flex flex-wrap items-center gap-2 pt-2 text-xs">
-          {articleInfoCardList.map((item, index) => (
-            <ArticleMetaItem {...item} key={index} />
-          ))}
-        </div>
-      </CardHeader>
-      <CardContent>{article?.description}</CardContent>
-    </Card>
+    <LoadingWrapper isLoading={isLoading} error={error} data={article}>
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle>
+            <div className="hover:text-primary text-lg">{article?.title}</div>
+          </CardTitle>
+          <div className="text-gray-custom flex flex-wrap items-center gap-2 pt-2 text-xs">
+            {articleInfoCardList.map((item, index) => (
+              <ArticleMetaItem {...item} key={index} />
+            ))}
+          </div>
+        </CardHeader>
+        <CardContent>{article?.description}</CardContent>
+      </Card>
+    </LoadingWrapper>
   );
 }

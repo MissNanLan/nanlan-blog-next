@@ -1,5 +1,5 @@
 import { SkeletonCard } from "./SkeletonCard";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardHeader } from "@/components/ui/card";
 
 interface LoadingWrapperProps<T> {
   isLoading: boolean;
@@ -18,7 +18,7 @@ export function LoadingWrapper<T>({
 }: LoadingWrapperProps<T>) {
   if (isLoading) return <LoadingComponent />;
   if (error) return <div>Error: {error.message}</div>;
-  if (!data?.length)
+  if (!data || (Array.isArray(data) && data.length === 0))
     return (
       <Card className="flex h-full items-center justify-center">
         <CardHeader>暂无数据</CardHeader>

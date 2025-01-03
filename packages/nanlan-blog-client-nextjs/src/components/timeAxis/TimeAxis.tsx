@@ -18,7 +18,7 @@ export function TimeAxis({
       {/* 主竖线 */}
       <div className="bg-primary absolute left-0 top-0 h-full w-[2px]" />
       <div className="left border-primary absolute left-[-10px] top-0 h-6 w-6 rounded-full border-4 bg-white" />
-      <div className="ml-6 flex text-2xl font-bold ">{title}</div>
+      <div className="ml-6 flex text-2xl font-bold">{title}</div>
       <div className="space-y-8">
         {timeAxisData.map((group) => (
           <div key={group.year} className="relative">

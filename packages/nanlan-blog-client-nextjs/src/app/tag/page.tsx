@@ -1,5 +1,5 @@
 "use client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { TagCloud } from "@/components/TagCloud";
 import { useTags } from "@/hooks/tag";
 import { LoadingWrapper } from "@/components/LoadingWrapper";
@@ -7,15 +7,15 @@ import { LoadingWrapper } from "@/components/LoadingWrapper";
 export default function Tag() {
   const { data: tags, isLoading, error } = useTags();
   return (
-    <Card>
-      <LoadingWrapper isLoading={isLoading} error={error} data={tags}>
+    <LoadingWrapper isLoading={isLoading} error={error} data={tags}>
+      <Card>
         <CardHeader>
-          <CardTitle className="text-2xl font-bold">标签</CardTitle>
+          <div className="text-2xl font-bold">标签</div>
         </CardHeader>
-        <CardContent className="p-8">
+        <CardContent>
           <TagCloud tags={tags || []} />
         </CardContent>
-      </LoadingWrapper>
-    </Card>
+      </Card>
+    </LoadingWrapper>
   );
 }

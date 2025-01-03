@@ -1,16 +1,9 @@
-export interface CategoryProps {
-  id: string;
-  name: string;
-  count: number;
-  icon?: string;
-  description?: string;
-  parentId?: string;
-  children?: CategoryProps[];
-}
-
 export interface Category {
   id: string;
   createdAt: string;
   updatedAt: string;
   name: string;
+  count: number;
+  parentId?: string;
+  children?: Category[];
 }

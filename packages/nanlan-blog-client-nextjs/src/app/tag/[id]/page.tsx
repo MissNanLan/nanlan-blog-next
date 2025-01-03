@@ -11,15 +11,15 @@ export default function TagDetail() {
   const { data, isLoading, error } = useTag(id as string);
 
   return (
-    <Card>
-      <LoadingWrapper isLoading={isLoading} error={error} data={data}>
+    <LoadingWrapper isLoading={isLoading} error={error} data={data}>
+      <Card>
         <CardContent className="p-8">
           <TimeAxis
             articles={data?.posts || []}
             title={`标签 - ${data?.name}` || ""}
           />
         </CardContent>
-      </LoadingWrapper>
-    </Card>
+      </Card>
+    </LoadingWrapper>
   );
 }

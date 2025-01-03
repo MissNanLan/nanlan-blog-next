@@ -2,14 +2,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RotateCcw } from "lucide-react";
 import Image from "next/image";
 import { LoadingWrapper } from "../LoadingWrapper";
-import { useStore } from "@/store/useStore";
+import { useArticleStore } from "@/store/article";
 
 export function ArticleSection() {
-  const { articles, loading: isLoading, error } = useStore();
+  const { articles, loading, error } = useArticleStore();
 
   return (
     <Card className="w-[350px]">
-      <LoadingWrapper isLoading={isLoading} error={error} data={articles}>
+      <LoadingWrapper isLoading={loading} error={error} data={articles}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <RotateCcw size={16} />

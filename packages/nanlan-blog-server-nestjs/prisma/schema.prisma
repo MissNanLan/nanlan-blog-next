@@ -29,10 +29,16 @@ model Post {
 }
 
 model Category {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  name    String   @unique
-  postIds String[] @db.ObjectId
-  posts   Post[]   @relation(fields: [postIds], references: [id])
+  id       String     @id @default(auto()) @map("_id") @db.ObjectId
+  name     String     @unique
+  // 父分类ID
+  parentId String?    @db.ObjectId
+  // 父分类关系
+  parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  // 子分类关系
+  children Category[] @relation("CategoryTree")
+  postIds  String[]   @db.ObjectId
+  posts    Post[]     @relation(fields: [postIds], references: [id])
 }
 
 model Tag {

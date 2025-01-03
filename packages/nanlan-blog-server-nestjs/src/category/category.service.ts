@@ -7,14 +7,50 @@ import { CategoryEntity } from './entities/category.entity';
 
 @Injectable()
 export class CategoryService {
+  private categorySelect = {
+    id: true,
+    name: true,
+    parentId: true,
+    children: true,
+    count: true,
+  } as const;
   constructor(private prisma: PrismaService) {}
+  // 构建树形结构
+  private buildTree = (items: any[], parentId: string | null = null): any[] => {
+    return items
+      .filter((item) => item.parentId === parentId)
+      .map((item) => ({
+        id: item.id,
+        postIds: item.postIds,
+        name: item.name,
+        parentId: item.parentId,
+        children: this.buildTree(items, item.id),
+        count: item._count.posts,
+      }));
+  };
 
   @ApiOperation({ summary: '创建分类' })
   @ApiResponse({ status: 200, description: '创建分类', type: CategoryEntity })
-  async create(createCategoryDto: CreateCategoryDto): Promise<CategoryEntity> {
-    return this.prisma.category.create({
-      data: createCategoryDto,
-    });
+  async create(createCategoryDto: CreateCategoryDto) {
+    try {
+      // 如果有父分类ID，先检查父分类是否存在
+      if (createCategoryDto.parentId) {
+        const parentExists = await this.prisma.category.findUnique({
+          where: { id: createCategoryDto.parentId },
+        });
+        if (!parentExists) {
+          throw new Error('父分类不存在');
+        }
+      }
+
+      const category = await this.prisma.category.create({
+        data: createCategoryDto,
+      });
+
+      return this.buildTree([category]);
+    } catch (error) {
+      throw new Error(`创建分类失败: ${error.message}`);
+    }
   }
 
   @ApiOperation({ summary: '获取所有分类' })
@@ -23,10 +59,19 @@ export class CategoryService {
     description: '获取所有分类',
     type: [CategoryEntity],
   })
-  async findAll(name?: string) {
-    return this.prisma.category.findMany({
-      where: { name: { contains: name } },
+  async findAll() {
+    const categories = await this.prisma.category.findMany({
+      include: {
+        _count: {
+          select: {
+            posts: true,
+          },
+        },
+        children: true,
+        parent: true,
+      },
     });
+    return this.buildTree(categories);
   }
 
   @ApiOperation({ summary: '获取分类' })
@@ -36,9 +81,19 @@ export class CategoryService {
     type: CategoryEntity,
   })
   async findOne(id: string) {
-    return this.prisma.category.findUnique({
+    const category = await this.prisma.category.findUnique({
       where: { id },
+      include: {
+        _count: {
+          select: {
+            posts: true,
+          },
+        },
+        parent: true,
+        children: true,
+      },
     });
+    return this.buildTree([category]);
   }
 
   @ApiOperation({ summary: '更新分类' })

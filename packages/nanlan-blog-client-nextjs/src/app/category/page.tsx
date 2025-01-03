@@ -1,8 +1,7 @@
 "use client";
-
 import { useEffect } from "react";
 
-export default function CategoriesPage() {
+export default function CategoryPage() {
   useEffect(() => {
     // 组件加载时的副作用
   }, []);

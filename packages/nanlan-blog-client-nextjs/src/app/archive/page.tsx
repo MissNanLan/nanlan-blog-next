@@ -2,19 +2,22 @@
 
 import { LoadingWrapper } from "@/components/LoadingWrapper";
 import { TimeAxis } from "@/components/timeAxis/TimeAxis";
-import { useArticles } from "@/hooks/article";
+import { Card, CardContent } from "@/components/ui/card";
+import { useArticleStore } from "@/store/article";
 
 export default function ArchivePage() {
-  const { data: articles, isLoading, error } = useArticles();
+  const { articles, loading, error } = useArticleStore();
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <LoadingWrapper isLoading={isLoading} error={error} data={articles}>
-        <TimeAxis
-          articles={articles || []}
-          title={`文章总览 - ${articles?.length}`}
-        />
-      </LoadingWrapper>
-    </div>
+    <LoadingWrapper isLoading={loading} error={error} data={articles}>
+      <Card>
+        <CardContent className="p-8">
+          <TimeAxis
+            articles={articles || []}
+            title={`文章总览 - ${articles?.length}`}
+          />
+        </CardContent>
+      </Card>
+    </LoadingWrapper>
   );
 }
