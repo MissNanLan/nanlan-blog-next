@@ -55,7 +55,21 @@ export class PostController {
   @Get('date/:date')
   @ApiOperation({ summary: '获取指定年月的文章' })
   @ApiOkResponse({ type: [PostEntity] })
-  async getByDate(@Param('date') date: string) {
+  async getPostByDate(@Param('date') date: string) {
     return this.postsService.findByDate(date);
+  }
+
+  @Get('category/:id')
+  @ApiOperation({ summary: '获取指定分类的文章' })
+  @ApiOkResponse({ type: [PostEntity] })
+  async getByCategoryId(@Param('id') id: string) {
+    return this.postsService.getPostByCategoryId(id);
+  }
+
+  @Get('tag/:id')
+  @ApiOperation({ summary: '获取指定标签的文章' })
+  @ApiOkResponse({ type: [PostEntity] })
+  async getByTagId(@Param('id') id: string) {
+    return this.postsService.getPostByTagId(id);
   }
 }

@@ -10,14 +10,3 @@ export function useTags() {
     },
   });
 }
-
-export function useTag(id: string) {
-  return useQuery({
-    queryKey: ["tag", id],
-    queryFn: async () => {
-      const response = await TagService.getTag(id);
-      return response.data;
-    },
-    enabled: !!id,
-  });
-}

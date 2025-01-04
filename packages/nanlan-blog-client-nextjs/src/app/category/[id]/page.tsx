@@ -3,12 +3,12 @@
 import { TimeAxis } from "@/components/timeAxis/TimeAxis";
 import { Card, CardContent } from "@/components/ui/card";
 import { useParams } from "next/navigation";
-import { useArticlesByTagId } from "@/hooks/article";
+import { useArticlesByCategoryId } from "@/hooks/article";
 import { LoadingWrapper } from "@/components/LoadingWrapper";
 
-export default function TagDetail() {
+export default function CategoryDetail() {
   const { id } = useParams();
-  const { data, isLoading, error } = useArticlesByTagId(id as string);
+  const { data, isLoading, error } = useArticlesByCategoryId(id as string);
 
   return (
     <LoadingWrapper isLoading={isLoading} error={error} data={data}>
@@ -16,7 +16,7 @@ export default function TagDetail() {
         <CardContent className="p-8">
           <TimeAxis
             articles={data || []}
-            title={`标签 - ${data?.[0]?.tags?.[0]?.name}` || ""}
+            title={`分类 - ${data?.[0]?.categories?.[0]?.name}` || ""}
           />
         </CardContent>
       </Card>

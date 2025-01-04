@@ -125,4 +125,33 @@ export class PostsService {
       select: this.postSelect,
     });
   }
+
+  async getPostByCategoryId(categoryId: string) {
+    const posts = await this.prisma.post.findMany({
+      where: {
+        categories: {
+          some: {
+            OR: [
+              { id: categoryId }, // 直接匹配
+              { parentId: categoryId }, // 子分类
+            ],
+          },
+        },
+      },
+      select: this.postSelect,
+    });
+    return posts;
+  }
+
+  async getPostByTagId(tagId: string) {
+    const posts = await this.prisma.post.findMany({
+      where: {
+        tags: {
+          some: { id: tagId },
+        },
+      },
+      select: this.postSelect,
+    });
+    return posts;
+  }
 }

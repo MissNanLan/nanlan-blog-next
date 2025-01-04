@@ -7,26 +7,30 @@ import { CategoryEntity } from './entities/category.entity';
 
 @Injectable()
 export class CategoryService {
-  private categorySelect = {
-    id: true,
-    name: true,
-    parentId: true,
-    children: true,
-    count: true,
-  } as const;
   constructor(private prisma: PrismaService) {}
-  // 构建树形结构
+
+  // 构建树形结构并计算总数
   private buildTree = (items: any[], parentId: string | null = null): any[] => {
-    return items
-      .filter((item) => item.parentId === parentId)
-      .map((item) => ({
+    const children = items.filter((item) => item.parentId === parentId);
+
+    return children.map((item) => {
+      // 递归获取子分类
+      const subCategories = this.buildTree(items, item.id);
+
+      // 计算当前分类及其所有子分类的文章总数
+      const totalCount = subCategories.reduce(
+        (sum, child) => sum + child.count,
+        item._count.posts,
+      );
+
+      return {
         id: item.id,
-        postIds: item.postIds,
         name: item.name,
         parentId: item.parentId,
-        children: this.buildTree(items, item.id),
-        count: item._count.posts,
-      }));
+        children: subCategories,
+        count: totalCount,
+      };
+    });
   };
 
   @ApiOperation({ summary: '创建分类' })
@@ -81,7 +85,8 @@ export class CategoryService {
     type: CategoryEntity,
   })
   async findOne(id: string) {
-    const category = await this.prisma.category.findUnique({
+    // 先获取目标分类
+    const categories = await this.prisma.category.findUnique({
       where: { id },
       include: {
         _count: {
@@ -89,11 +94,9 @@ export class CategoryService {
             posts: true,
           },
         },
-        parent: true,
-        children: true,
       },
     });
-    return this.buildTree([category]);
+    return categories;
   }
 
   @ApiOperation({ summary: '更新分类' })

@@ -28,9 +28,6 @@ export class TagService {
   async findOne(id: string) {
     return this.prisma.tag.findUnique({
       where: { id },
-      include: {
-        posts: true,
-      },
     });
   }
 

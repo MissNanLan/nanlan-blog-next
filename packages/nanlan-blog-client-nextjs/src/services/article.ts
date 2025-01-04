@@ -6,4 +6,8 @@ export const articleService = {
   getArticle: (id: string) => request.get<Post>(`/post/${id}`),
   getArticlesByDate: (date: string) =>
     request.get<Post[]>(`/post/date/${date}`),
+  getArticlesByCategoryId: (categoryId: string) =>
+    request.get<Post[]>(`/post/category/${categoryId}`),
+  getArticlesByTagId: (tagId: string) =>
+    request.get<Post[]>(`/post/tag/${tagId}`),
 };

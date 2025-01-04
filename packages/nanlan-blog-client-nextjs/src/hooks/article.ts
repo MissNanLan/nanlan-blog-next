@@ -31,3 +31,23 @@ export function useArticlesByYear(date: string) {
     },
   });
 }
+
+export function useArticlesByCategoryId(categoryId: string) {
+  return useQuery({
+    queryKey: ["articlesByCategoryId", categoryId],
+    queryFn: async () => {
+      const response = await articleService.getArticlesByCategoryId(categoryId);
+      return response.data;
+    },
+  });
+}
+
+export function useArticlesByTagId(tagId: string) {
+  return useQuery({
+    queryKey: ["articlesByTagId", tagId],
+    queryFn: async () => {
+      const response = await articleService.getArticlesByTagId(tagId);
+      return response.data;
+    },
+  });
+}
