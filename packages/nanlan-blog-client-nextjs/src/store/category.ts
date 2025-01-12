@@ -23,19 +23,21 @@ export const useCategoryStore = create<AppState>()((set, get) => ({
   setLoading: (loading) => set({ loading }),
   error: null,
   setError: (error) => set({ error }),
-
   // 异步获取分类
   fetchCategories: async () => {
     const { categories } = get();
     // 如果已有数据，直接返回
-    if (categories.length > 0) return;
+    if (categories.length > 0) return categories;
 
     try {
       set({ loading: true });
       const response = await categoryService.getCategories();
-      set({ categories: response.data });
+      const newCategories = response.data;
+      set({ categories: newCategories });
+      return newCategories;
     } catch (error) {
       set({ error: error as Error });
+      return [];
     } finally {
       set({ loading: false });
     }

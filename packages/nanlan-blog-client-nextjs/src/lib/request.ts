@@ -2,7 +2,8 @@ import axios from "axios";
 
 export const request = axios.create({
   baseURL: "/api",
-  timeout: 5000,
+  timeout: 20000,
+  timeoutErrorMessage: "请求超时，请稍后重试",
 });
 
 // 请求拦截器
@@ -22,6 +23,9 @@ request.interceptors.response.use(
     return response.data;
   },
   (error) => {
+    if (error.code === "ECONNABORTED" && error.message.includes("timeout")) {
+      console.error("Request timeout");
+    }
     console.error("Request error:", error.response?.data || error);
     return Promise.reject(error);
   },

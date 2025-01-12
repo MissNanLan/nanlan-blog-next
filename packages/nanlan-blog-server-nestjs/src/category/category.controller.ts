@@ -21,7 +21,6 @@ export class CategoryController {
   @ApiOperation({ summary: '创建分类' })
   @ApiOkResponse({ type: CategoryEntity })
   create(@Body() createCategoryDto: CreateCategoryDto) {
-    console.log('createCategoryDto', createCategoryDto);
     return this.categoryService.create(createCategoryDto);
   }
 
@@ -47,19 +46,19 @@ export class CategoryController {
     return this.categoryService.findOne(id);
   }
 
-  @Patch(':id')
-  @ApiOperation({ summary: '更新分类' })
-  @ApiResponse({
-    status: 200,
-    description: '更新分类',
-    type: CategoryEntity,
-  })
-  update(
-    @Param('id') id: string,
-    @Body() updateCategoryDto: UpdateCategoryDto,
-  ) {
-    return this.categoryService.update(id, updateCategoryDto);
-  }
+  // @Patch(':id')
+  // @ApiOperation({ summary: '更新分类' })
+  // @ApiResponse({
+  //   status: 200,
+  //   description: '更新分类',
+  //   type: CategoryEntity,
+  // })
+  // update(
+  //   @Param('id') id: string,
+  //   @Body() updateCategoryDto: UpdateCategoryDto,
+  // ) {
+  //   return this.categoryService.update(id, updateCategoryDto);
+  // }
 
   @Delete(':id')
   @ApiOperation({ summary: '删除分类' })

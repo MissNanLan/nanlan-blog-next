@@ -1,18 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
+import { IsString, IsOptional, IsArray, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CreateCategoryDto {
-  @IsNotEmpty()
   @IsString()
   @ApiProperty({ description: '分类名字', example: '前端' })
   name: string;
 
   @IsOptional()
-  @IsString()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateCategoryDto)
   @ApiProperty({
-    description: '父分类ID',
+    description: '子分类列表',
     required: false,
-    example: '1234567890',
+    type: [CreateCategoryDto],
   })
-  parentId?: string;
+  children?: CreateCategoryDto[];
 }

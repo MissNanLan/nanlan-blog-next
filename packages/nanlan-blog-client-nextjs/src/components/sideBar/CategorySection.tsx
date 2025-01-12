@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Book } from "lucide-react";
 import { useCategoryStore } from "@/store/category";
-import { LoadingWrapper } from "../LoadingWrapper";
+import { LoadingWrapper } from "../loading/LoadingWrapper";
 import { useEffect } from "react";
 import Link from "next/link";
 
@@ -25,7 +25,7 @@ export function CategorySection() {
           <div className="flex flex-col gap-2">
             {categories?.map((item) => (
               <div key={item.id}>
-                <Link href={`/category/${item.id}`}>
+                <Link href={`/category/${item.id}?name=${item.name}`}>
                   <div className="hover:bg-primary flex items-center justify-between  text-lg font-medium hover:px-2 hover:text-white">
                     <span className="line-clamp-2">{item.name}</span>
                     <span>{item.count}</span>
@@ -34,7 +34,7 @@ export function CategorySection() {
 
                 {item?.children?.map((item) => (
                   <div key={item.id}>
-                    <Link href={`/category/${item.id}`}>
+                    <Link href={`/category/${item.id}?name=${item.name}`}>
                       <div
                         className="hover:bg-primary flex items-center justify-between pl-4 hover:px-2 hover:text-white"
                         key={item.id}

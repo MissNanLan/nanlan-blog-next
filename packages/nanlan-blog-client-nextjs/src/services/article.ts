@@ -1,13 +1,14 @@
 import { request } from "@/lib/request";
-import { Post } from "@/types/article";
+import { Post, PostParams, PostPaginated } from "@/types/article";
 
 export const articleService = {
-  getArticles: () => request.get<Post[]>("/post"),
   getArticle: (id: string) => request.get<Post>(`/post/${id}`),
-  getArticlesByDate: (date: string) =>
-    request.get<Post[]>(`/post/date/${date}`),
-  getArticlesByCategoryId: (categoryId: string) =>
-    request.get<Post[]>(`/post/category/${categoryId}`),
-  getArticlesByTagId: (tagId: string) =>
-    request.get<Post[]>(`/post/tag/${tagId}`),
+  getArticles: (params: PostParams) =>
+    request.get<PostPaginated>("/post", { params }),
+  getArticlesByDate: (date: string, params?: PostParams) =>
+    request.get<PostPaginated>(`/post/date/${date}`, { params }),
+  getArticlesByCategoryId: (categoryId: string, params?: PostParams) =>
+    request.get<PostPaginated>(`/post/category/${categoryId}`, { params }),
+  getArticlesByTagId: (tagId: string, params: PostParams) =>
+    request.get<PostPaginated>(`/post/tag/${tagId}`, { params }),
 };

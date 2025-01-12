@@ -1,4 +1,5 @@
 import { Category } from "./category";
+import { ApiResponse } from "./request";
 import { Tag } from "./tag";
 
 export interface Post {
@@ -13,4 +14,25 @@ export interface Post {
   count: number;
   updatedAt: string;
   readingTime: number;
+}
+
+export interface PostParams {
+  cursor?: string;
+  limit?: number;
+  orderBy?: "asc" | "desc";
+  keyword?: string;
+  tagId?: string;
+  categoryId?: string;
+  date?: string;
+}
+
+export interface PageInfo {
+  hasNextPage: boolean;
+  nextCursor: string | null;
+}
+
+export interface PostPaginated {
+  content: Post[];
+  hasNextPage: boolean;
+  nextCursor: string | null;
 }

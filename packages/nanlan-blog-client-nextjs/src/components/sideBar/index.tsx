@@ -1,8 +1,4 @@
 "use client";
-
-import { articles } from "@/mock/articles";
-import { categories } from "@/mock/categories";
-
 import { ArticleSection } from "./ArticleSection";
 import { CommentSection } from "./CommentSection";
 import { comments } from "@/mock/comments";
@@ -15,7 +11,7 @@ export function Sidebar() {
     <div className="flex flex-col gap-6">
       <ArticleSection />
       <CommentSection comments={comments} />
-      <CategorySection categories={categories} />
+      <CategorySection />
       <TagSection />
       <ArchiveSection />
     </div>

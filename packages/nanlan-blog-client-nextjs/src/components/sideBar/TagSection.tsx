@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useTags } from "@/hooks/tag";
+import { useTags } from "@/hooks/request/tag";
 import { Tag } from "lucide-react";
-import { LoadingWrapper } from "../LoadingWrapper";
+import { LoadingWrapper } from "../loading/LoadingWrapper";
 import { TagCloud } from "../TagCloud";
 
 export function TagSection() {

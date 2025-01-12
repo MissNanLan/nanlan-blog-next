@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CategoryEntity } from './entities/category.entity';
@@ -33,28 +32,40 @@ export class CategoryService {
     });
   };
 
+  private createCategoryWithChidlren = async (
+    data: CreateCategoryDto,
+    parentId?: string,
+  ) => {
+    const category = await this.prisma.category.create({
+      data: {
+        name: data.name,
+        parentId,
+      },
+    });
+    if (data.children?.length) {
+      for (const child of data.children) {
+        await this.createCategoryWithChidlren(child, category.id);
+      }
+    }
+    return category;
+  };
+
   @ApiOperation({ summary: '创建分类' })
   @ApiResponse({ status: 200, description: '创建分类', type: CategoryEntity })
   async create(createCategoryDto: CreateCategoryDto) {
-    try {
-      // 如果有父分类ID，先检查父分类是否存在
-      if (createCategoryDto.parentId) {
-        const parentExists = await this.prisma.category.findUnique({
-          where: { id: createCategoryDto.parentId },
-        });
-        if (!parentExists) {
-          throw new Error('父分类不存在');
-        }
-      }
+    const category = await this.createCategoryWithChidlren(createCategoryDto);
+    const fullCategory = await this.prisma.category.findUnique({
+      where: { id: category.id },
+      include: {
+        children: {
+          include: {
+            children: true,
+          },
+        },
+      },
+    });
 
-      const category = await this.prisma.category.create({
-        data: createCategoryDto,
-      });
-
-      return this.buildTree([category]);
-    } catch (error) {
-      throw new Error(`创建分类失败: ${error.message}`);
-    }
+    return fullCategory;
   }
 
   @ApiOperation({ summary: '获取所有分类' })
@@ -94,23 +105,26 @@ export class CategoryService {
             posts: true,
           },
         },
+        children: true,
+        parent: true,
       },
     });
+    // TODO: 返回数据结构不对
     return categories;
   }
 
-  @ApiOperation({ summary: '更新分类' })
-  @ApiResponse({
-    status: 200,
-    description: '更新分类',
-    type: CategoryEntity,
-  })
-  async update(id: string, updateCategoryDto: UpdateCategoryDto) {
-    return this.prisma.category.update({
-      where: { id },
-      data: updateCategoryDto,
-    });
-  }
+  // @ApiOperation({ summary: '更新分类' })
+  // @ApiResponse({
+  //   status: 200,
+  //   description: '更新分类',
+  //   type: CategoryEntity,
+  // })
+  // async update(id: string, updateCategoryDto: UpdateCategoryDto) {
+  //   return this.prisma.category.update({
+  //     where: { id },
+  //     data: updateCategoryDto,
+  //   });
+  // }
 
   @ApiOperation({ summary: '删除分类' })
   @ApiResponse({

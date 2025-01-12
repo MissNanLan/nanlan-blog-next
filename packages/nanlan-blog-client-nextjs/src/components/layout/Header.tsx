@@ -1,7 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { Home, Tags, Archive, FolderTree, Search, Menu } from "lucide-react";
+import {
+  Home,
+  Tags,
+  Archive,
+  FolderTree,
+  Search,
+  Menu,
+  Search as SearchIcon,
+} from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -10,6 +18,7 @@ import {
 } from "@/components/ui/sheet";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { SearchDialog } from "@/components/search/SearchDialog";
 
 export default function Header() {
   const NavBar = () => {
@@ -48,9 +57,12 @@ export default function Header() {
       <>
         {/* Desktop Navigation */}
         <nav className="hidden items-center space-x-8 md:flex">
-          <span className={cn(linkStyles, hoverLinkStyles)}>
-            <Search className="h-4 w-4" /> 搜索
-          </span>
+          <SearchDialog>
+            <div className={cn(linkStyles, hoverLinkStyles, "cursor-pointer")}>
+              <SearchIcon className="h-4 w-4" />
+              <span>搜索</span>
+            </div>
+          </SearchDialog>
           {navbarList.map((item) => (
             <Link
               key={item.name}
@@ -78,7 +90,13 @@ export default function Header() {
         {/* Mobile Navigation */}
         <div className="flex items-center gap-2 md:hidden">
           <Sheet>
-            <Search className="h-4 w-4" />
+            <SearchDialog>
+              <div
+                className={cn(linkStyles, hoverLinkStyles, "cursor-pointer")}
+              >
+                <SearchIcon className="h-4 w-4" />
+              </div>
+            </SearchDialog>
             <SheetTrigger asChild>
               <Menu className="h-6 w-6" />
             </SheetTrigger>

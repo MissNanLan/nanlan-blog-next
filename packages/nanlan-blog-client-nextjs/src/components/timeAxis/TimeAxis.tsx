@@ -32,7 +32,7 @@ export function TimeAxis({
                   <div className="left absolute left-[-6px] top-1/2 h-3 w-3 rounded-full border-2 border-orange-400 bg-white" />
                   <div className="ml-8 flex">
                     <Image
-                      src={item?.image || ""}
+                      src={item?.image || "/images/thumbnail.jpeg"}
                       alt={item.title}
                       width={100}
                       height={100}

@@ -14,7 +14,7 @@ export function CommentSection({ comments }: { comments: CommentProps[] }) {
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-3">
-          {comments.map((item) => (
+          {comments?.map((item) => (
             <div className="flex items-center gap-2" key={item.id}>
               <Image
                 src="/images/thumbnail.jpeg"
