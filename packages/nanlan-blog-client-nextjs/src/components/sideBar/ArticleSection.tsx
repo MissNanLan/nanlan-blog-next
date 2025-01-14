@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { LoadingWrapper } from "../loading/LoadingWrapper";
 import { formatDate } from "@/utils";
-import { useArticleContext } from "@/contexts/articleContext";
+import { useArticleContext } from "../../contexts/ArticleContext";
 
 export function ArticleSection() {
   const { articles = [], isLoading, error } = useArticleContext();

@@ -1,4 +1,4 @@
-import { ArticleProvider } from "@/contexts/articleContext";
+import { ArticleProvider } from "../../contexts/ArticleContext";
 import { Sidebar } from "../sidebar";
 
 export function PageLayout({ children }: { children: React.ReactNode }) {
