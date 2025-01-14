@@ -10,7 +10,7 @@ import { useArticleList } from "@/hooks/useArticleList";
 import { LoadMore } from "@/components/loading/LoadMore";
 
 export default function CategoryDetail() {
-  const { id } = useParams();
+  const params = useParams();
   const categoryName = useQueryParam("name");
   const {
     articles = [],
@@ -20,7 +20,7 @@ export default function CategoryDetail() {
   } = useArticleList({
     type: "category",
     params: {
-      categoryId: id as string,
+      categoryId: params.id as string,
     },
   });
 

@@ -1,5 +1,4 @@
 import { Category } from "./category";
-import { ApiResponse } from "./request";
 import { Tag } from "./tag";
 
 export interface Post {

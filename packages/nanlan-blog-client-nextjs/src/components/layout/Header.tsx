@@ -6,7 +6,6 @@ import {
   Tags,
   Archive,
   FolderTree,
-  Search,
   Menu,
   Search as SearchIcon,
 } from "lucide-react";
