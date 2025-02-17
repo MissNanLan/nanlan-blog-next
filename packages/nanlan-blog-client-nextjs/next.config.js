@@ -1,45 +1,46 @@
 const fs = require("fs");
 const path = require("path");
 
-module.exports = (phase, { defaultConfig }) => {
-  console.log("process.env.NODE_ENV", process.env.NODE_ENV);
-
-  // 获取完整配置
-  const fullConfig = {
-    ...defaultConfig,
-    rewrites: async () => [
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // 输出独立构建,提高部署性能
+  output: 'standalone',
+  
+  // 图片域名白名单
+  images: {
+    domains: ['example.com', 'cdn.yoursite.com'],
+    remotePatterns: [
       {
-        source: "/api/:path*",
-        destination: "http://127.0.0.1:3001/api/:path*",
-      },
+        protocol: 'https',
+        hostname: '**.example.com',
+      }
     ],
-  };
+    // 图片优化配置
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+  },
 
-  // 准备配置输出
-  const configOutput = {
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV,
-    nextVersion: process.env.NEXT_VERSION,
-    config: fullConfig,
-  };
+  // 启用 SWC 压缩,提升构建性能
+  // swcMinify: true,
 
-  // 确保输出目录存在
-  const outputDir = path.join(__dirname, "config-output");
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true });
+  // 环境变量配置
+  env: {
+    API_URL: process.env.API_URL
+  },
+
+  // 根据环境配置重写规则
+  async rewrites() {
+    if (process.env.NODE_ENV === 'development') {
+      return [
+        {
+          source: '/api/:path*',
+          destination: 'http://localhost:3001/api/:path*'
+        }
+      ]
+    }
+    
+    return []  // 生产环境不需要重写规则
   }
+}
 
-  // 根据环境写入不同的配置文件
-  const fileName =
-    process.env.NODE_ENV === "production"
-      ? "next.config.prod.json"
-      : "next.config.dev.json";
-
-  // 写入配置文件
-  fs.writeFileSync(
-    path.join(outputDir, fileName),
-    JSON.stringify(configOutput, null, 2),
-  );
-
-  return fullConfig;
-};
+module.exports = nextConfig

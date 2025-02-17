@@ -36,4 +36,8 @@ pnpm-debug.log*
 .env.*
 !.env.example
 
+# turbo
+.turbo
+
+# config-output
 config-output
