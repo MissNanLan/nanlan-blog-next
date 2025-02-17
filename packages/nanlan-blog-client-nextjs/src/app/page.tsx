@@ -1,4 +1,5 @@
 "use client";
+
 import { ArticleCard } from "@/components/ArticleCard";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { LoadingWrapper } from "@/components/loading/LoadingWrapper";

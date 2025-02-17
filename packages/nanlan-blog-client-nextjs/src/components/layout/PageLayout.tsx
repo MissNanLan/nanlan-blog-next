@@ -1,5 +1,5 @@
 import { ArticleProvider } from "../../contexts/ArticleContext";
-import { Sidebar } from "../sidebar";
+import { Sidebar } from "../sideBar";
 
 export function PageLayout({ children }: { children: React.ReactNode }) {
   return (

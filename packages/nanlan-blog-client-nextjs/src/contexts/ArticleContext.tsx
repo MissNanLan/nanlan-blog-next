@@ -18,20 +18,19 @@ const ArticleContext = createContext<ArticleContextType>({
 
 export function ArticleProvider({ children }: { children: ReactNode }) {
   const { data, isLoading, error } = useArticlesForSidebar();
-
-  const value = {
-    articles: data,
-    isLoading,
-    error,
-  };
-
+  
   return (
-    <ArticleContext.Provider value={value}>{children}</ArticleContext.Provider>
+    <ArticleContext.Provider value={{
+      articles: data || [],
+      isLoading,
+      error
+    }}>
+      {children}
+    </ArticleContext.Provider>
   );
 }
 
-export function useArticleContext() {
-  const context = useContext(ArticleContext);
+export function useArticleContext() {  const context = useContext(ArticleContext);
   if (context === undefined) {
     throw new Error("useArticleContext must be used within an ArticleProvider");
   }

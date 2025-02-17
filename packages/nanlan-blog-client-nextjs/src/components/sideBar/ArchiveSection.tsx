@@ -3,7 +3,7 @@ import { Archive } from "lucide-react";
 import Link from "next/link";
 import { getArticlesGroupByYear } from "../timeAxis/handle";
 import { LoadingWrapper } from "../loading/LoadingWrapper";
-import { useArticleContext } from "../../contexts/articleContext";
+import { useArticleContext } from "../../contexts/ArticleContext";
 
 export function ArchiveSection() {
   const { articles = [] } = useArticleContext();
