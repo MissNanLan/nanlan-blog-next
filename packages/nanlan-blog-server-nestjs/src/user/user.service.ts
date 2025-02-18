@@ -3,13 +3,13 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserEntity } from './entities/user.entity';
-import { LoggerUtil } from 'src/common/utils/logger.util';
+import { LoggerUtil } from '../common/utils/logger.util';
 
 @Injectable()
 export class UsersService {
   private readonly logger = new LoggerUtil(UsersService.name);
 
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(createUserDto: CreateUserDto) {
     try {

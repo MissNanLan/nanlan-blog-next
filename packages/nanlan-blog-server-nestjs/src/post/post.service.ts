@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { LoggerUtil } from 'src/common/utils/logger.util';
+import { LoggerUtil } from '../common/utils/logger.util';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -17,7 +17,7 @@ import { FindPostByCategoryDto } from './dto/request/find-post-by-category.dto';
 export class PostsService {
   private readonly logger = new LoggerUtil(PostsService.name);
 
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async findAll(params: FindPostDto) {
     const { cursor, limit, orderBy, keyword } = params;
@@ -26,12 +26,12 @@ export class PostsService {
       prisma: this.prisma,
       where: keyword
         ? {
-            OR: [
-              { title: { contains: keyword, mode: 'insensitive' } },
-              { content: { contains: keyword, mode: 'insensitive' } },
-              { description: { contains: keyword, mode: 'insensitive' } },
-            ],
-          }
+          OR: [
+            { title: { contains: keyword, mode: 'insensitive' } },
+            { content: { contains: keyword, mode: 'insensitive' } },
+            { description: { contains: keyword, mode: 'insensitive' } },
+          ],
+        }
         : undefined,
       cursor,
       limit,
@@ -133,11 +133,11 @@ export class PostsService {
         categories: {
           some: !category?.parentId
             ? {
-                OR: [{ id: categoryId }, { parentId: categoryId }],
-              }
+              OR: [{ id: categoryId }, { parentId: categoryId }],
+            }
             : {
-                id: categoryId,
-              },
+              id: categoryId,
+            },
         },
       },
       cursor,
