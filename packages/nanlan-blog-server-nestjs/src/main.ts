@@ -7,7 +7,7 @@ import { ResponseInterceptor } from './common/interceptors/response.interceptor'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
+
   // CORS配置
   app.enableCors({
     origin: process.env.ALLOWED_ORIGINS?.split(',') || [],
@@ -35,12 +35,17 @@ async function bootstrap() {
   if (process.env.NODE_ENV !== 'production') {
     const config = new DocumentBuilder()
       .setTitle('Nanlan Blog API')
-      .setDescription('Nanlan Blog API description')
+      .setDescription('Nanlan Blog API Description')
       .setVersion('1.0')
       .addTag('Nanlan Blog')
       .build();
     const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup('api', app, document);
+
+    SwaggerModule.setup('api', app, document, {
+      jsonDocumentUrl: 'swagger/json',
+      yamlDocumentUrl: 'swagger/yaml',
+    });
+
   }
 
   await app.listen(process.env.PORT || 3001);
