@@ -42,3 +42,5 @@ pnpm-debug.log*
 # config-output
 config-output
 .vercel
+
+.specstory
