@@ -1,28 +1,14 @@
-"use client";
+import { articleService } from "@/services/article";
+import { Suspense } from "react";
+import { Loading } from "@/components/loading/Loading";
+import { ArticleList } from "./ArticleList";
 
-import { ArticleCard } from "@/components/ArticleCard";
-import { PageLayout } from "@/components/layout/PageLayout";
-import { LoadingWrapper } from "@/components/loading/LoadingWrapper";
-import { LoadMore } from "@/components/loading/LoadMore";
-import { useArticleList } from "@/hooks/useArticleList";
-
-export default function Home() {
-  const { articles, isLoading, error, loadMoreProps } = useArticleList({
-    type: "all",
-  });
+export default async function ArticlesPage() {
+  const initialData = await articleService.getArticles({ limit: 5 });
 
   return (
-    <PageLayout>
-      <LoadingWrapper isLoading={isLoading} error={error} data={articles}>
-        <div className="space-y-4">
-          {articles?.map((article) => (
-            <div key={article.id}>
-              <ArticleCard {...article} />
-            </div>
-          ))}
-          <LoadMore {...loadMoreProps} />
-        </div>
-      </LoadingWrapper>
-    </PageLayout>
+    <Suspense fallback={<Loading />}>
+      <ArticleList initialData={initialData} />
+    </Suspense>
   );
 }

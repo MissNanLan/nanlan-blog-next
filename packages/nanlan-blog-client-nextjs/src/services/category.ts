@@ -1,8 +1,9 @@
-import { request } from "@/lib/request";
+
+import { get } from "@/lib/request";
 import { Category } from "@/types/category";
 
-export const categoryService = {
+export const CategoryService = {
   getCategories: () => {
-    return request.get<Category[]>("/category");
+    return get<Category[]>("/category");
   },
 };

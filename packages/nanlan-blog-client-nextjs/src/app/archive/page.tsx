@@ -1,28 +1,16 @@
-"use client";
+import { Suspense } from "react";
+import { Loading } from "@/components/loading/Loading";
+import { articleService } from "@/services/article";
+import { ArchiveAllList } from "./ArchiveAllList";
 
-import { LoadingWrapper } from "@/components/loading/LoadingWrapper";
-import { LoadMore } from "@/components/loading/LoadMore";
-import { TimeAxis } from "@/components/timeAxis/TimeAxis";
-import { Card, CardContent } from "@/components/ui/card";
-import { useArticleList } from "@/hooks/useArticleList";
-
-export default function ArchivePage() {
-  const { articles, isLoading, error, loadMoreProps } = useArticleList({
-    type: "all",
+export default async function ArchivePage() {
+  const articles = await articleService.getArticles({
+    limit: 10,
   });
 
   return (
-    <LoadingWrapper isLoading={isLoading} error={error} data={articles}>
-      <Card>
-        <CardContent className="p-8">
-          <TimeAxis
-            articles={articles || []}
-            title={`文章总览 - ${articles?.length}`}
-          />
-
-          <LoadMore {...loadMoreProps} />
-        </CardContent>
-      </Card>
-    </LoadingWrapper>
+    <Suspense fallback={<Loading />}>
+      <ArchiveAllList initialData={articles} />
+    </Suspense>
   );
 }

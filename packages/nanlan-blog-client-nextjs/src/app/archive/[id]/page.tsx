@@ -1,33 +1,27 @@
-"use client";
+import { Suspense } from "react";
+import { Loading } from "@/components/loading/Loading";
+import { ArchiveList } from "./ArchiveList";
+import { articleService } from "@/services/article";
+import { Params } from "@/types/common";
 
-import { TimeAxis } from "@/components/timeAxis/TimeAxis";
-import { Card, CardContent } from "@/components/ui/card";
-import { useParams } from "next/navigation";
-import { LoadingWrapper } from "@/components/loading/LoadingWrapper";
-import { useArticleList } from "@/hooks/useArticleList";
-import { LoadMore } from "@/components/loading/LoadMore";
+export default async function ArchiveDetail({ params }: Params) {
+  if (!params?.id) {
+    return <div>Invalid archive date</div>;
+  }
 
-export default function ArchiveDetail() {
-  const { id } = useParams();
-  const { articles, isLoading, error, loadMoreProps } = useArticleList({
-    type: "date",
-    params: {
-      date: id as string,
-    },
+  const articles = await articleService.getArticlesByDate(params.id, {
+    limit: 10,
   });
 
   return (
-    <Card>
-      <LoadingWrapper isLoading={isLoading} error={error} data={articles}>
-        <CardContent className="p-8">
-          <TimeAxis
-            articles={articles || []}
-            title={`文章总览 - ${articles?.length}` || ""}
-          />
-
-          <LoadMore {...loadMoreProps} />
-        </CardContent>
-      </LoadingWrapper>
-    </Card>
+    <Suspense fallback={<Loading />}>
+      <ArchiveList initialData={articles} date={params.id} />
+    </Suspense>
   );
+}
+
+export async function generateMetadata({ params }: Params) {
+  return {
+    title: `Archive - ${params.id}`,
+  };
 }

@@ -2,16 +2,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RotateCcw } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { LoadingWrapper } from "../loading/LoadingWrapper";
 import { formatDate } from "@/utils";
-import { useArticleContext } from "@/contexts/ArticleContext";
+import { Post } from "@/types/article";
+import { Suspense } from "react";
+import { Loading } from "../loading/Loading";
 
-export function ArticleSection() {
-  const { articles = [], isLoading, error } = useArticleContext();
-
+export function ArticleSection({ articles }: { articles: Post[] }) {
   return (
     <Card className="w-[350px]">
-      <LoadingWrapper isLoading={isLoading} error={error} data={articles}>
+      <Suspense fallback={<Loading />}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <RotateCcw size={16} />
@@ -25,10 +24,11 @@ export function ArticleSection() {
                 index < 8 && (
                   <div className="flex items-center gap-2" key={item.id}>
                     <Image
-                      src="/images/thumbnail.jpeg"
+                      src="http://image-nanlan.test.upcdn.net/20220603171350.png"
                       alt={item.title}
                       width={80}
                       height={80}
+                      priority={true}
                       className="rounded-md object-cover"
                     />
                     <div className="flex-around flex flex-col justify-between gap-2">
@@ -44,7 +44,7 @@ export function ArticleSection() {
             )}
           </div>
         </CardContent>
-      </LoadingWrapper>
+      </Suspense>
     </Card>
   );
 }

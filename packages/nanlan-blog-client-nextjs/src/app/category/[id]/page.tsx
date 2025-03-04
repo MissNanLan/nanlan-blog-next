@@ -1,42 +1,19 @@
-"use client";
+import { CategoryArticleList } from "./CategoryArticleList";
+import { articleService } from "@/services/article";
+import { Suspense } from "react";
+import { Loading } from "@/components/loading/Loading";
+import { Params } from "@/types/common";
 
-import { TimeAxis } from "@/components/timeAxis/TimeAxis";
-import { Card, CardContent } from "@/components/ui/card";
-import { useParams } from "next/navigation";
-import { LoadingWrapper } from "@/components/loading/LoadingWrapper";
-import { useQueryParam } from "@/hooks/request/queryParams";
-import { PageLayout } from "@/components/layout/PageLayout";
-import { useArticleList } from "@/hooks/useArticleList";
-import { LoadMore } from "@/components/loading/LoadMore";
+export default async function CategoryDetail({ params }: Params) {
+  if (!params?.id) {
+    return <div>Invalid category id</div>;
+  }
 
-export default function CategoryDetail() {
-  const params = useParams();
-  const categoryName = useQueryParam("name");
-  const {
-    articles = [],
-    isLoading,
-    error,
-    loadMoreProps,
-  } = useArticleList({
-    type: "category",
-    params: {
-      categoryId: params.id as string,
-    },
-  });
+  const initialData = await articleService.getArticlesByCategoryId(params.id);
 
   return (
-    <PageLayout>
-      <LoadingWrapper isLoading={isLoading} error={error} data={articles}>
-        <Card>
-          <CardContent className="p-8">
-            <TimeAxis
-              articles={articles || []}
-              title={`分类 - ${categoryName}` || ""}
-            />
-          </CardContent>
-        </Card>
-        <LoadMore {...loadMoreProps} />
-      </LoadingWrapper>
-    </PageLayout>
+    <Suspense fallback={<Loading />}>
+      <CategoryArticleList initialData={initialData} categoryId={params?.id} />
+    </Suspense>
   );
 }

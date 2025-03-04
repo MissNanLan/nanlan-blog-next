@@ -1,16 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Archive } from "lucide-react";
 import Link from "next/link";
-import { getArticlesGroupByYear } from "../timeAxis/handle";
-import { LoadingWrapper } from "../loading/LoadingWrapper";
-import { useArticleContext } from "../../contexts/ArticleContext";
+import { getArticlesGroupByYearMonth } from "../timeAxis/handle";
+import { Post } from "@/types/article";
+import { Suspense } from "react";
+import { Loading } from "../loading/Loading";
 
-export function ArchiveSection() {
-  const { articles = [] } = useArticleContext();
-  const isLoading = false;
-  const error = null;
-
-  const archives = getArticlesGroupByYear(articles);
+export function ArchiveSection({ articles }: { articles: Post[] }) {
+  const archives = getArticlesGroupByYearMonth(articles);
   const chineseMonth = [
     "一月",
     "二月",
@@ -29,7 +26,7 @@ export function ArchiveSection() {
 
   return (
     <Card className="w-[350px]">
-      <LoadingWrapper isLoading={isLoading} error={error} data={archives}>
+      <Suspense fallback={<Loading />}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Archive size={16} />
@@ -41,7 +38,7 @@ export function ArchiveSection() {
             {archives?.map((item) => (
               <Link
                 href={`/archive/${item.year}-${monthFormat(item.month)}`}
-                key={item.year}
+                key={`${item.year}-${item.month}`}
               >
                 <div key={item.year}>
                   <div className="hover:bg-primary flex items-center justify-between font-medium hover:px-2 hover:text-white">
@@ -58,7 +55,7 @@ export function ArchiveSection() {
             ))}
           </div>
         </CardContent>
-      </LoadingWrapper>
+      </Suspense>
     </Card>
   );
 }

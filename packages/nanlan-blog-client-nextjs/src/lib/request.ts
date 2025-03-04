@@ -1,32 +1,68 @@
-import axios from "axios";
+import { Res } from "@/types/res";
 
-export const request = axios.create({
-  baseURL: "/api",
-  timeout: 20000,
-  timeoutErrorMessage: "请求超时，请稍后重试",
-});
+export type Payload<T> = {
+    params?: T;
+    init?: RequestInit;
+}
 
-// 请求拦截器
-request.interceptors.request.use(
-  (config) => {
-    // 可以在这里添加 token 等
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  },
-);
+export async function post<T, R>(url: string, payload: T, init?: RequestInit): Promise<R> {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${url}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+            ...init,
+        });
 
-// 响应拦截器
-request.interceptors.response.use(
-  (response) => {
-    return response.data;
-  },
-  (error) => {
-    if (error.code === "ECONNABORTED" && error.message.includes("timeout")) {
-      console.error("Request timeout");
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data: Res<R> = await response.json();
+
+
+        if (data.message !== "success") {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error posting data:', error);
+        throw error;
     }
-    console.error("Request error:", error.response?.data || error);
-    return Promise.reject(error);
-  },
-);
+}
+
+
+export async function get<R, T = Record<string, string>>(url: string, payload?: Payload<T>): Promise<R> {
+    try {
+
+        if (payload?.params) {
+            const queryParams = new URLSearchParams(payload?.params as Record<string, string>);
+            url = `${url}?${queryParams.toString()}`;
+        }
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${url}`, {
+            method: 'GET',
+            ...payload?.init,
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data: Res<R> = await response.json();
+
+
+        if (data.message !== "success") {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return data.data;
+    } catch (error) {
+        console.error('Error getting data:', error);
+        throw error;
+    }
+}
+

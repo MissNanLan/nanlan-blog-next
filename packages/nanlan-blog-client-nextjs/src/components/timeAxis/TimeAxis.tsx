@@ -2,6 +2,7 @@ import { Calendar } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { formatDate } from "@/utils";
+import { Archive } from "@/types/archive";
 import { Post } from "@/types/article";
 import { getArticlesGroupByYear } from "./handle";
 
@@ -13,6 +14,7 @@ export function TimeAxis({
   title: string;
 }) {
   const timeAxisData = getArticlesGroupByYear(articles);
+
   return (
     <div className="relative">
       {/* 主竖线 */}

@@ -1,20 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Book } from "lucide-react";
-import { useCategoryStore } from "@/store/category";
-import { LoadingWrapper } from "../loading/LoadingWrapper";
-import { useEffect } from "react";
+import { Suspense } from "react";
 import Link from "next/link";
+import { Category } from "@/types/category";
+import { Loading } from "../loading/Loading";
 
-export function CategorySection() {
-  const { categories, error, loading, fetchCategories } = useCategoryStore();
-
-  useEffect(() => {
-    fetchCategories();
-  }, [fetchCategories]);
-
+export function CategorySection({ categories }: { categories: Category[] }) {
   return (
-    <LoadingWrapper isLoading={loading} error={error} data={categories}>
-      <Card className="w-[350px]">
+    <Card className="w-[350px]">
+      <Suspense fallback={<Loading />}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Book size={16} />
@@ -51,7 +45,7 @@ export function CategorySection() {
             ))}
           </div>
         </CardContent>
-      </Card>
-    </LoadingWrapper>
+      </Suspense>
+    </Card>
   );
 }

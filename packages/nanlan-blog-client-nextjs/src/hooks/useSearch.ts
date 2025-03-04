@@ -4,7 +4,6 @@ import { useState } from "react";
 
 export function useSearch() {
   const [keyword, setKeyword] = useState("");
-
   const { data, isLoading } = useQuery({
     queryKey: ["search", keyword],
     queryFn: () => articleService.getArticles({ keyword }),
@@ -14,7 +13,7 @@ export function useSearch() {
   return {
     keyword,
     setKeyword,
-    results: data?.data?.content || [],
+    results: data?.content || [],
     isLoading,
   };
 }

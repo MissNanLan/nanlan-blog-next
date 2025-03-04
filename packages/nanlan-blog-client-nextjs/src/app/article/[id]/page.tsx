@@ -1,29 +1,28 @@
-"use client";
-
-import { useParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useArticle } from "@/hooks/request/article";
-import { LoadingWrapper } from "@/components/loading/LoadingWrapper";
 import { ArticleMeta } from "@/components/AricleMeta";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { Suspense } from "react";
+import { Loading } from "@/components/loading/Loading";
+import { articleService } from "@/services/article";
+import { Params } from "@/types/common";
 
-export default function ArticleDetail() {
-  const { id } = useParams<{ id: string }>();
-  const { data: article, isLoading, error } = useArticle(id);
+export default async function ArticleDetail({ params }: Params) {
+  if (!params?.id) {
+    return <div></div>;
+  }
+
+  const article = await articleService.getArticle(params.id);
 
   return (
-    <PageLayout>
-      <LoadingWrapper isLoading={isLoading} error={error} data={article}>
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle>
-              <div className="hover:text-primary text-lg">{article?.title}</div>
-            </CardTitle>
-            <ArticleMeta article={article!} />
-          </CardHeader>
-          <CardContent>{article?.content}</CardContent>
-        </Card>
-      </LoadingWrapper>
-    </PageLayout>
+    <Card>
+      <Suspense fallback={<Loading />}>
+        <CardHeader className="pb-3">
+          <CardTitle>
+            <div className="hover:text-primary text-lg">{article?.title}</div>
+          </CardTitle>
+          <ArticleMeta article={article!} />
+        </CardHeader>
+        <CardContent>{article?.content}</CardContent>
+      </Suspense>
+    </Card>
   );
 }
