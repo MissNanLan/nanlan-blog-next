@@ -1,6 +1,3 @@
-export type Params = {
-    params: {
-        id: string;
-    };
+export type PageProps = {
+    params: Promise<{ id: string }>;
 };
-

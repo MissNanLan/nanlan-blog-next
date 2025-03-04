@@ -6,7 +6,6 @@ import { LoadMore } from "@/components/loading/LoadMore";
 import { PostPaginated } from "@/types/article";
 import { Card, CardContent } from "@/components/ui/card";
 import { TimeAxis } from "@/components/timeAxis/TimeAxis";
-import { getArticlesGroupByYear } from "@/components/timeAxis/handle";
 
 export function TagArticleList({
   initialData,
