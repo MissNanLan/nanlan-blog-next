@@ -12,7 +12,6 @@ const nextConfig = {
         hostname: "image-nanlan.test.upcdn.net",
         port: "",
         pathname: "/**",
-        search: "",
       },
     ],
   },
@@ -22,7 +21,7 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: `${process.env.NEXT_PUBLIC_API_BASE_URL}/:path*`,
+        destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`,
       },
     ];
   },

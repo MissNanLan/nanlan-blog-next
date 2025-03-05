@@ -13,7 +13,7 @@ async function bootstrap() {
     origin: process.env.ALLOWED_ORIGINS?.split(',') || [],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ["X-Requested-With,Content-Type,Accept,Authorization"],
   });
 
   // 数据转换
@@ -25,6 +25,7 @@ async function bootstrap() {
       },
     }),
   );
+
   // 全局注册转换拦截器
   app.useGlobalInterceptors(new ResponseInterceptor());
   // 注册全局异常过滤器
@@ -40,26 +41,10 @@ async function bootstrap() {
       .addTag('Nanlan Blog')
       .build();
     const document = SwaggerModule.createDocument(app, config);
-
-    SwaggerModule.setup('api', app, document, {
-      jsonDocumentUrl: 'swagger/json',
-      yamlDocumentUrl: 'swagger/yaml',
-    });
-
+    SwaggerModule.setup('api', app, document);
   }
 
   await app.listen(process.env.PORT || 3001);
 }
 
-// 为了支持 Vercel Serverless Functions
-export default async function handler(req, res) {
-  const app = await NestFactory.create(AppModule);
-  await app.init();
-  const instance = app.getHttpAdapter().getInstance();
-  return instance(req, res);
-}
-
-// 本地开发时使用
-if (process.env.NODE_ENV !== 'production') {
-  bootstrap();
-}
+bootstrap();

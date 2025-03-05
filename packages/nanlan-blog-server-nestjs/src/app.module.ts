@@ -5,8 +5,12 @@ import { TagModule } from './tag/tag.module';
 import { CategoryModule } from './category/category.module';
 import { UserModule } from './user/user.module';
 
+
+
 @Module({
   imports: [PrismaModule, PostModule, TagModule, CategoryModule, UserModule],
+  controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule { }
+
