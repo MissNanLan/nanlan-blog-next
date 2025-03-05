@@ -21,11 +21,11 @@ import { PostEntity } from './entity/post.entity';
 import { PaginatedPostsEntity } from './entity/paginated-posts.entity';
 import { FindPostByDateDto } from './dto/request/find-post-by-date.dto';
 import { FindPostDto } from './dto/request/find-post-by-all.dto';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { PaginationDto } from '../common/dto/pagination.dto';
 
 @Controller('post')
 export class PostController {
-  constructor(private readonly postsService: PostsService) {}
+  constructor(private readonly postsService: PostsService) { }
 
   @Post()
   @ApiOperation({ summary: '创建文章' })

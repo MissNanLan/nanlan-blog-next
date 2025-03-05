@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, Matches } from 'class-validator';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { PaginationDto } from '../../../common/dto/pagination.dto';
 
 export class FindPostByDateDto extends PaginationDto {
   @ApiProperty({ description: '日期 (YYYY-MM)' })
