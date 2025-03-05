@@ -1,4 +1,5 @@
 import { Res } from "@/types/res";
+import { API_CONFIG } from "@/config/api";
 
 export type Payload<T> = {
     params?: T;
@@ -7,7 +8,7 @@ export type Payload<T> = {
 
 export async function post<T, R>(url: string, payload: T, init?: RequestInit): Promise<R> {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${url}`, {
+        const response = await fetch(`${API_CONFIG.baseURL}${url}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -43,7 +44,7 @@ export async function get<R, T = Record<string, string>>(url: string, payload?: 
             url = `${url}?${queryParams.toString()}`;
         }
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${url}`, {
+        const response = await fetch(`${API_CONFIG.baseURL}${url}`, {
             method: 'GET',
             ...payload?.init,
         });
