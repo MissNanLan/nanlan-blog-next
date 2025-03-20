@@ -39,12 +39,16 @@ export async function post<T, R>(url: string, payload: T, init?: RequestInit): P
 export async function get<R, T = Record<string, string>>(url: string, payload?: Payload<T>): Promise<R> {
     try {
 
+        const baseURL = `${API_CONFIG.baseURL}/api${url}`;
+        let apiUrl = baseURL;
+        console.log("apiUrl", apiUrl);
+
         if (payload?.params) {
             const queryParams = new URLSearchParams(payload?.params as Record<string, string>);
-            url = `${url}?${queryParams.toString()}`;
+            apiUrl = `${apiUrl}?${queryParams.toString()}`;
         }
 
-        const response = await fetch(`${API_CONFIG.baseURL}${url}`, {
+        const response = await fetch(apiUrl, {
             method: 'GET',
             ...payload?.init,
         });
