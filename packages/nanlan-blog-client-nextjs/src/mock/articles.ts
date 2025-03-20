@@ -15,17 +15,17 @@ export const article: PostPaginated = {
             "count": 0,
             "categories": [
                 {
-                    "id": "67b5a84e5b6f55b2c8da9ee4",
-                    "name": "网络",
-                    "parentId": null,
-                    "children": []
+
+                    id: "67b5a84e5b6f55b2c8da9ee4",
+                    name: "ddd",
+                    createdAt: "2025-03-19T14:54:18.286Z",
+                    updatedAt: "2025-03-19T14:54:18.286Z",
+                    count: 0,
+                    parentId: "e4b476606e4c31c2",
                 }
             ],
-            "author": {
-                "id": "67b47259c5141fd3cd9876c1",
-                "name": "John Doe",
-                "email": "john@example.com"
-            }
+            "tags": [
+            ]
         }
     ]
 }
