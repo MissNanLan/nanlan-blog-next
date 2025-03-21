@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { Loading } from "@/components/loading/Loading";
+import { articleService } from "@/services/article";
 import { ArchiveAllList } from "./ArchiveAllList";
 import { article } from "@/mock/articles";
 
