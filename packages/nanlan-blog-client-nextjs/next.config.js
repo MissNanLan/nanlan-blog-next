@@ -17,14 +17,9 @@ const nextConfig = {
   },
 
   // 根据环境配置重写规则
-  // async rewrites() {
-  //   return [
-  //     {
-  //       source: "/api/:path*",
-  //       destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`,
-  //     },
-  //   ];
-  // },
+  async rewrites() {
+    return [];
+  },
 };
 
 module.exports = nextConfig;
