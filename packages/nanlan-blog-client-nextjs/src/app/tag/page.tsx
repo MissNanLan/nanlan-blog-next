@@ -11,7 +11,7 @@ export default async function TagPage() {
     <Suspense fallback={<Loading />}>
       <Card>
         <CardHeader>
-          <div className="text-2xl font-bold">标签测试</div>
+          <div className="text-2xl font-bold">标签 111111</div>
         </CardHeader>
         <CardContent>
           <TagCloud tags={tags || []} />
