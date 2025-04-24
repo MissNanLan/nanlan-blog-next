@@ -17,7 +17,7 @@ import { useState } from "react";
 
 export function SearchDialog({ children }: { children: React.ReactNode }) {
   const { keyword, setKeyword, results, isLoading } = useSearch();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean | undefined>(undefined);
 
   const handleClose = () => {
     setOpen(false);
