@@ -4,7 +4,6 @@ import { Input } from "../ui/input";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogTrigger,
 } from "../ui/dialog";
@@ -14,14 +13,23 @@ import { DialogHeader } from "../ui/dialog";
 import { ScrollArea } from "../ui/scroll-area";
 import { SearchCard } from "./SearchCard";
 import { DialogTitle } from "@radix-ui/react-dialog";
+import { useState } from "react";
 
 export function SearchDialog({ children }: { children: React.ReactNode }) {
   const { keyword, setKeyword, results, isLoading } = useSearch();
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="h-[80vh] max-w-2xl">
+      <DialogContent
+        className="h-[80vh] max-w-2xl"
+        aria-describedby="search-dialog-description"
+      >
         <div className="h-[60vh] max-w-2xl">
           <DialogHeader className="bg-background sticky top-0 z-10 mt-6">
             <DialogTitle>
@@ -33,17 +41,21 @@ export function SearchDialog({ children }: { children: React.ReactNode }) {
             </DialogTitle>
           </DialogHeader>
           <ScrollArea className="mt-6 h-full pr-4">
-            <DialogDescription>
+            <div className="mb-4" id="search-dialog-description">
               <LoadingWrapper isLoading={isLoading} data={results}>
                 <div className="space-y-4">
                   {results?.map((article) => (
-                    <div key={article.id}>
+                    <div
+                      key={article.id}
+                      onClick={handleClose}
+                      style={{ cursor: "pointer" }}
+                    >
                       <SearchCard article={article} keyword={keyword} />
                     </div>
                   ))}
                 </div>
               </LoadingWrapper>
-            </DialogDescription>
+            </div>
           </ScrollArea>
         </div>
         <DialogFooter>
